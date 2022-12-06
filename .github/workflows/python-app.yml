@@ -1,0 +1,38 @@
+name: renew_recruitment
+
+on:
+  schedule:
+    - cron: '* * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10.6
+    - name: Install dependencies
+      run: |
+        sudo apt install -y xclip
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        wget ${{ secrets.IMAGELINK }}
+    - name: Run main.py
+      run: |
+        python main.py
+      env:
+        COMMENT: ${{ secrets.COMMENT }}
+        IMAGEPATH: ${{ secrets.IMAGEPATH }}
+        INVENCONTENT: ${{ secrets.INVENCONTENT }}
+        INVENID: ${{ secrets.INVENID }}
+        INVENPW: ${{ secrets.INVENPW }}
+        INVENTITLE: ${{ secrets.INVENTITLE }}
+        KEYWORD: ${{ secrets.KEYWORD }}
+        NAVERCONTENT: ${{ secrets.NAVERCONTENT }}
+        NAVERID: ${{ secrets.NAVERID }}
+        NAVERPW: ${{ secrets.NAVERPW }}
+        NAVERTITLE: ${{ secrets.NAVERTITLE }}
+        SERVER: ${{ secrets.SERVER }}
+        WAIT: ${{ secrets.WAIT }}
